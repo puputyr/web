@@ -1,26 +1,21 @@
 <?php
 include 'koneksi.php';
 
-if (isset($_POST['sign_up'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+if (isset($_POST['register'])) {
+    $nama = $_POST['form-nama'];
+    $email = $_POST['form-email'];
+    $password = $_POST['form-password'];
 
-    $check_email = mysqli_query($koneksi, "SELECT * FROM user WHERE email='$email'");
-    if ($check_email) {
-        echo "<script>alert('Email sudah terdaftar')</script>";
+    $query = "INSERT INTO wisatawan (Nama, No_telp, Email, Password) 
+    VALUES ('$nama', '-', '$email', '$password')";
 
+
+    $result = mysqli_query($koneksi, $query);
+
+    if (!$result) {
+        die("Query gagal dijalankan: " . mysqli_errno($koneksi) . " - " . mysqli_error($koneksi));
     } else {
-        $query = "INSERT INTO user (email, password) 
-        VALUES ('$email', '$password')";
-
-
-        $result = mysqli_query($koneksi, $query);
-
-        if (!$result) {
-            die("Query gagal dijalankan: " . mysqli_errno($koneksi) . " - " . mysqli_error($koneksi));
-        } else {
-            echo "<script>alert('Berhasil Register');window.location.href='index.php'</script>";
-        }
+        echo "<script>alert('Anda Berhasil Sign Up');window.location.href='login.php'</script>";
     }
 }
 ?>
