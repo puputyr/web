@@ -1,19 +1,24 @@
 <?php
 include 'koneksi.php';
 
-if (isset($_POST['sign_in'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+if (isset($_POST['login'])) {
+    $email = $_POST['form-email'];
+    $password = $_POST['form-password'];
 
-    $check_user = mysqli_query($koneksi, "SELECT * FROM user WHERE email='$email'");
-    if ($check_user) {
-        echo "<script>alert('Email tidak terdaftar')</script>";
-    }
-    if ($check_user != $password) {
-        echo "<script>alert('Kamu lupa ya?')</script>";
+    $query = "SELECT * FROM wisatawan WHERE Email='$email'";
 
+
+    $result = mysqli_query($koneksi, $query);
+   
+    if (mysqli_num_rows($result)!=0) {
+        $row = mysqli_fetch_assoc($result);
+        if ($row["Password"] == $password) {
+            echo "<script>alert('Anda Berhasil Login');window.location.href='dasb.php'</script>";
+        } else {
+            echo "<script>alert('Password salah!');window.location.href='login.php'</script>";
+        }
     } else {
-        echo "<script>alert('Selamat anda dapet ayang');window.location.href=' .php'</script>";
+        echo "<script>alert('email salah!');window.location.href='login.php'</script>";
     }
 }
 ?>
